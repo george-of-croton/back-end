@@ -24,7 +24,7 @@ mongoose.connect("mongodb://localhost:27017/test", function(err, db) {
 	}
 })
 
-app.get('/api/message', GetMessages)
+app.get('/api/message', GetMessages) 
 
 app.post('/api/message', function(req, res){
 	console.log(req.body);
@@ -37,7 +37,6 @@ app.post('/api/message', function(req, res){
 
 function GetMessages(req, res) {
 	Message.find({}).exec(function(err, result){
-		console.log(res);
 		res.send(result);
 	})
 }
