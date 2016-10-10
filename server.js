@@ -3,9 +3,10 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var database;
-var Message = mongoose.model('Message', {
-	msg: String
-});
+var message = require('./controllers/message')
+var auth = require('./controllers/auth');
+
+
 
 
 app.use(bodyParser.json());
@@ -24,26 +25,13 @@ mongoose.connect("mongodb://localhost:27017/test", function(err, db) {
 	}
 })
 
-app.get('/api/message', GetMessages) 
+app.get('/api/message', message.get) 
 
-app.post('/api/message', function(req, res){
-	console.log(req.body);
+app.post('/api/message', message.post)
 
-	var message = new Message(req.body);
-	console.log(message)
-	message.save();
-	res.status(200);
-})
+app.post('/auth/register', auth.register)
 
-app.post('/auth/register', function(req, res){
-	console.log(req.body);
-})
 
-function GetMessages(req, res) {
-	Message.find({}).exec(function(err, result){
-		res.send(result);
-	})
-}
  
 var server = app.listen(5000, function(){
 	console.log("server is running on port", server.address().port)
